@@ -7,7 +7,7 @@ import java.util.List;
 public interface Store {
     boolean add(User user);
 
-    boolean update(User user,String id);
+    boolean update(User user, String id);
 
     boolean delete(String id);
 
@@ -15,4 +15,7 @@ public interface Store {
 
     User findById(String id);
 
+    void removeAll();
+
+    int getCounterId();
 }

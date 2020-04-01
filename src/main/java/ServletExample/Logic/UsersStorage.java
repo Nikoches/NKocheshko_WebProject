@@ -24,10 +24,10 @@ public class UsersStorage implements Store {
     }
 
     @Override
-    //TODO Сделай что нибудь с ид, проверка не проходит при втором добавлении
+
     public boolean add(User user) {
-        if(!alreadyHas(user)) {
-            userList.put(user.getId(),user);
+        if (!alreadyHas(user)) {
+            userList.put(user.getId(), user);
             return true;
         }
         return false;
@@ -36,8 +36,8 @@ public class UsersStorage implements Store {
     @Override
     public boolean update(User user, String id) {
         user.setId(Integer.parseInt(id));
-        if(alreadyHas(user)){
-           userList.put(Integer.parseInt(id),user);
+        if (alreadyHas(user)) {
+            userList.put(Integer.parseInt(id), user);
             return true;
         }
         return false;
@@ -45,7 +45,7 @@ public class UsersStorage implements Store {
 
     @Override
     public boolean delete(String id) {
-        if(userList.containsKey(Integer.parseInt(id))){
+        if (userList.containsKey(Integer.parseInt(id))) {
             userList.remove(Integer.parseInt(id));
             return true;
         }
@@ -65,7 +65,8 @@ public class UsersStorage implements Store {
     public boolean alreadyHas(User user) {
         return userList.containsKey(user.getId());
     }
-    public void removeAll(){
+
+    public void removeAll() {
         userList.clear();
     }
 }
