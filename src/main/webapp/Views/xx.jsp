@@ -20,11 +20,10 @@
 <table>
     <tbody>
     <%
-        String test1 = "<tr> <td>email = %s</td> <td>login = %s</td> <td>name = %s</td> <td><a href=\"update?id=%s&key=update\">Update</a></td> <td><a href=\"update?id=%s&key=delete\">Delete</a></td> </tr>";
-        Formatter formatter = new Formatter();
+        String test1 = "<tr><td>id = %s</td> <td>email = %s</td> <td>login = %s</td> <td>name = %s</td> <td><a href=\"update?id=%s&key=update\">Update</a></td> <td><a href=\"remove?id=%s&key=delete\">Delete</a></td> </tr>";
         List<User> names = (List<User>) request.getAttribute("list");
         for (User s : names) {
-            out.println(formatter.format(test1,s.getEmail(),s.getLogin(),s.getName(),s.getId(),s.getId()));
+            out.println(String.format(test1,s.getId(),s.getEmail(),s.getLogin(),s.getName(),s.getId(),s.getId()));
     }
     %>
     </tbody>

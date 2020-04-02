@@ -12,7 +12,7 @@
 </head>
 <body>
 <%
-    User user = (User)request.getAttribute("user");
+     User user = (User)request.getAttribute("user");
 %>
 <form name="loginForm" method="post" action="update">
     Username: <input type="text" name="name" value="<%out.print(user.getName());%>"/> <br/>
@@ -22,6 +22,7 @@
     Email: <input type="text" name="email" value="<%out.print(user.getEmail());%>"/> <br/>
     <p>  </p>
     <input type="hidden" name="id" value="<%out.print(user.getId());%>"/> <br/>
+    <input type="hidden" name="key" value="update"/> <br/>
     <input type="submit" value="Update" />
     <p></p>
     <a href="all">All Users</a>

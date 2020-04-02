@@ -6,7 +6,6 @@ public class User {
     private String email;
     private String createDate;
     private int id;
-
     public User(String name, String login, String email, String createDate) {
         this.name = name;
         this.login = login;
@@ -14,7 +13,7 @@ public class User {
         this.createDate = createDate;
     }
 
-    public int getId() {
+    public int  getId() {
         return id;
     }
 
@@ -52,5 +51,10 @@ public class User {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.login + " " + this.email;
     }
 }

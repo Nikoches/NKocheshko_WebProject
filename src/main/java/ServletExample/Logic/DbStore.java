@@ -58,7 +58,7 @@ public class DbStore implements Store {
             return false;
         }
         String sqlc = "update users  SET login = '%s',email='%s',name='%s' where id=%s";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlc, user.getLogin(), user.getEmail(), user.getName(), user.getId()))) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlc, user.getLogin(),user.getEmail(),user.getName(),id))) {
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -68,11 +68,11 @@ public class DbStore implements Store {
 
     @Override
     public boolean delete(String id) {
-        if (existUser(id)) {
+        if (!existUser(id)){
             return false;
         }
         String sqlc = "delete from  users  where id=%s;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlc, id))) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlc,id))) {
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -85,9 +85,9 @@ public class DbStore implements Store {
     public List<User> findlAll() {
         List<User> userList = new ArrayList<>();
         String sqlc = "select * from users order by id;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc); ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                User user = new User(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc);ResultSet resultSet = preparedStatement.executeQuery()) {
+            while(resultSet.next()) {
+                User user = new User(resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5));
                 user.setId(resultSet.getInt(1));
                 userList.add(user);
             }
