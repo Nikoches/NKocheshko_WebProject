@@ -5,6 +5,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -43,8 +44,13 @@ public class DbStore implements Store {
     @Override
     public boolean add(User user) {
         user.setId(getCounterId());
-        String sqlc = ("insert into users (id, name, login, email, creation_date) values ('%s', '%s', '%s', '%s', '%s');");
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlc, user.getId(), user.getName(), user.getLogin(), user.getEmail(), user.getCreateDate()))) {
+        String sqlc = ("insert into users (id, name, login, email, creation_date) values (?,?,?,?,?);");
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
+            preparedStatement.setInt(1,user.getId());
+            preparedStatement.setString(2,user.getName());
+            preparedStatement.setString(3,user.getLogin());
+            preparedStatement.setString(4,user.getEmail());
+            preparedStatement.setDate(5, Date.valueOf(user.getCreateDate()));
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -57,8 +63,12 @@ public class DbStore implements Store {
         if (!existUser(id)) {
             return false;
         }
-        String sqlc = "update users  SET login = '%s',email='%s',name='%s' where id=%s";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlc, user.getLogin(),user.getEmail(),user.getName(),id))) {
+        String sqlc = "update users  SET login = ?, email = ?, name = ? where id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
+            preparedStatement.setString(1,user.getName());
+            preparedStatement.setString(2,user.getLogin());
+            preparedStatement.setString(3,user.getEmail());
+            preparedStatement.setInt(4,Integer.parseInt(id));
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -71,8 +81,9 @@ public class DbStore implements Store {
         if (!existUser(id)){
             return false;
         }
-        String sqlc = "delete from  users  where id=%s;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlc,id))) {
+        String sqlc = "delete from  users  where id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
+            preparedStatement.setInt(1,Integer.parseInt(id));
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -104,7 +115,9 @@ public class DbStore implements Store {
         if (!existUser(id)) {
             return user;
         }
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(" select * from users where id=%s;", id)); ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(" select * from users where id=?;")) {
+            preparedStatement.setInt(1,Integer.parseInt(id));
+            ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             user = new User(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
             user.setId(resultSet.getInt(1));
@@ -129,8 +142,10 @@ public class DbStore implements Store {
     }
 
     private boolean existUser(String id) {
-        String request = "select * from users where id=%s";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(request, id)); ResultSet resultSet = preparedStatement.executeQuery()) {
+        String request = "select * from users where id=?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(request)) {
+            preparedStatement.setInt(1,Integer.parseInt(id));
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 return false;
             }
