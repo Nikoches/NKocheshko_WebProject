@@ -1,33 +1,27 @@
-<%@ page import="ServletExample.Model.User" %>
-<%@ page import="java.util.Formatter" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Scanner" %><%--
-  Created by IntelliJ IDEA.
-  User: User
-  Date: 24.02.2020
-  Time: 11:16
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Table of Users</title>
 </head>
 <body>
-<jsp:useBean id="list" class="java.util.ArrayList" scope="request"/>
 <h2>Users:</h2>
 <a href="add">Add User</a>
 <table>
-    <tbody>
-    <%
-        String test1 = "<tr><td>id = %s</td> <td>email = %s</td> <td>login = %s</td> <td>name = %s</td> <td><a href=\"update?id=%s&key=update\">Update</a></td> <td><a href=\"remove?id=%s&key=delete\">Delete</a></td> </tr>";
-        List<User> names = (List<User>) request.getAttribute("list");
-        for (User s : names) {
-            out.println(String.format(test1,s.getId(),s.getEmail(),s.getLogin(),s.getName(),s.getId(),s.getId()));
-    }
-    %>
-    </tbody>
+    <tr>
+        <th>id</th>
+        <th>email</th>
+        <th>name</th>
+        <th>login</th>
+    </tr>
+    <c:forEach items="${list}" var = "user">
+        <td><c:out value="${user.id}"/></td>
+        <td><c:out value="${user.email}"/></td>
+        <td><c:out value="${user.name}"/></td>
+        <td><c:out value="${user.login}"/></td>
+        <td><a href="remove?id=${user.id}&key=delete">Delete</a></td>
+        <td><a href="update?id=${user.id}&key=update">Update</a></td>
+    </c:forEach>
 </table>
-
 </body>
 </html>
