@@ -6,11 +6,22 @@ public class User {
     private String email;
     private String createDate;
     private int id;
+    private String imageName;
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
     public User(String name, String login, String email, String createDate) {
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = createDate;
+        //this.imageName = imageName;
     }
 
     public int  getId() {

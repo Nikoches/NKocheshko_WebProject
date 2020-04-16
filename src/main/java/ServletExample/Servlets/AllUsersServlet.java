@@ -15,13 +15,13 @@ public class AllUsersServlet extends HttpServlet {
         ValidateService validateService = ValidateService.getInstance();
         ArrayList s2 = (ArrayList) validateService.process(req,"findAll").get();
         req.setAttribute("list", s2);
-        req.getRequestDispatcher("Views/xx.jsp").forward(req, resp);
+        req.getRequestDispatcher("Views/AllUsers.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ValidateService validateService = ValidateService.getInstance();
         ArrayList s2 = (ArrayList) validateService.process(req,"findAll").get();
         req.setAttribute("list", s2);
-        req.getRequestDispatcher("Views/xx.jsp").forward(req, resp);
+        req.getRequestDispatcher("Views/AllUsers.jsp").forward(req, resp);
     }
 }

@@ -5,7 +5,7 @@
     <title>Updating User</title>
 </head>
 <body>
-<form name="loginForm" method="post" action="update">
+<form name="loginForm" method="post" action="<%=request.getContextPath()%>/update">
     Username: <input type="text" name="name" value=${user.name}> <br/>
     <p>  </p>
     Login: <input type="text" name="login" value=${user.login}> <br/>

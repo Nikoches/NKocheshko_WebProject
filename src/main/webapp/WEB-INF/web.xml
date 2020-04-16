@@ -13,7 +13,14 @@
         <servlet-name>UpdateUser</servlet-name>
         <servlet-class>ServletExample.Servlets.UpdateUserServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>DownloadImage</servlet-name>
+        <servlet-class>ServletExample.Servlets.DownloadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>testForm</servlet-name>
+        <servlet-class>ServletExample.Servlets.TestServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>AddUser</servlet-name>
         <servlet-class>ServletExample.Servlets.AddUserServlet</servlet-class>
@@ -34,6 +41,10 @@
         <load-on-startup>0</load-on-startup>
 
     </servlet>
+    <servlet>
+        <servlet-name>UploadImage</servlet-name>
+        <servlet-class>ServletExample.Servlets.UploadServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AddUser</servlet-name>
         <url-pattern>/add</url-pattern>
@@ -49,5 +60,17 @@
     <servlet-mapping>
         <servlet-name>AllUsers</servlet-name>
         <url-pattern>/all</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadImage</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadImage</servlet-name>
+        <url-pattern>/download</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>testForm</servlet-name>
+        <url-pattern>/test</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -12,14 +12,18 @@ public class RemoveUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ValidateService validateService = ValidateService.getInstance();
-       validateService.process(req,req.getParameter("key"));
+        if(req.getParameter("id")==null){
+            validateService.process(req,"removeAll");
+        }else {
+            validateService.process(req,req.getParameter("key"));
+        }
         resp.sendRedirect("all");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ValidateService validateService = ValidateService.getInstance();
-        validateService.process(req,req.getParameter("key"));
+        validateService.process(req,req.getParameter("delete"));
         resp.sendRedirect("all");
     }
 }

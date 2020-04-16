@@ -1,12 +1,11 @@
 package ServletExample.Servlets;
 
-import ServletExample.Logic.ValidateService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,18 +14,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
-public class AddUserServlet extends HttpServlet{
+public class UploadServlet extends HttpServlet {
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        resp.setContentType("text/html");
-        req.getRequestDispatcher("Views/AddUser.jsp").forward(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+          List<String> images = new ArrayList<>();
+        for (File name : new File("images").listFiles()) {
+            images.add(name.getName());
+        }
+        req.setAttribute("images", images);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("Views/upload.jsp");
+        dispatcher.forward(req, resp);
     }
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        ValidateService validateService = ValidateService.getInstance();
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletContext servletContext = this.getServletConfig().getServletContext();
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
@@ -44,17 +48,11 @@ public class AddUserServlet extends HttpServlet{
                     try (FileOutputStream out = new FileOutputStream(file)) {
                         out.write(item.getInputStream().readAllBytes());
                     }
-                } else {
-                    HashMap<String,String> params = new HashMap<>();
-                    String secondParam = Streams.asString(item.getInputStream());
-                    params.put(item.getFieldName(),secondParam);
                 }
             }
-            validateService.process(items,"add");
         } catch (FileUploadException e) {
             e.printStackTrace();
         }
-        validateService.process(req,"add");
-        req.getRequestDispatcher("all").forward(req, resp);
+        doGet(req, resp);
     }
 }

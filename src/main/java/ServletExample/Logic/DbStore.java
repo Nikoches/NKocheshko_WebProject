@@ -44,13 +44,14 @@ public class DbStore implements Store {
     @Override
     public boolean add(User user) {
         user.setId(getCounterId());
-        String sqlc = ("insert into users (id, name, login, email, creation_date) values (?,?,?,?,?);");
+        String sqlc = ("insert into users (id, name, login, email, creation_date,imageName) values (?,?,?,?,?,?);");
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
-            preparedStatement.setInt(1,user.getId());
-            preparedStatement.setString(2,user.getName());
-            preparedStatement.setString(3,user.getLogin());
-            preparedStatement.setString(4,user.getEmail());
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getLogin());
+            preparedStatement.setString(4, user.getEmail());
             preparedStatement.setDate(5, Date.valueOf(user.getCreateDate()));
+            preparedStatement.setString(6,user.getImageName());
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -65,10 +66,10 @@ public class DbStore implements Store {
         }
         String sqlc = "update users  SET login = ?, email = ?, name = ? where id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
-            preparedStatement.setString(1,user.getName());
-            preparedStatement.setString(2,user.getLogin());
-            preparedStatement.setString(3,user.getEmail());
-            preparedStatement.setInt(4,Integer.parseInt(id));
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getLogin());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setInt(4, Integer.parseInt(id));
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -78,28 +79,28 @@ public class DbStore implements Store {
 
     @Override
     public boolean delete(String id) {
-        if (!existUser(id)){
+        if (!existUser(id) & id != null) {
             return false;
         }
-        String sqlc = "delete from  users  where id = ?;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
-            preparedStatement.setInt(1,Integer.parseInt(id));
-            preparedStatement.execute();
-        } catch (Exception x) {
-            x.printStackTrace();
+            String sqlc = "delete from  users  where id = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
+                preparedStatement.setInt(1, Integer.parseInt(id));
+                preparedStatement.execute();
+            } catch (Exception x) {
+                x.printStackTrace();
         }
-
-        return false;
+        return true;
     }
 
     @Override
     public List<User> findlAll() {
         List<User> userList = new ArrayList<>();
         String sqlc = "select * from users order by id;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc);ResultSet resultSet = preparedStatement.executeQuery()) {
-            while(resultSet.next()) {
-                User user = new User(resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5));
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                User user = new User(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
                 user.setId(resultSet.getInt(1));
+                user.setImageName(resultSet.getString(6));
                 userList.add(user);
             }
         } catch (Exception x) {
@@ -116,11 +117,12 @@ public class DbStore implements Store {
             return user;
         }
         try (PreparedStatement preparedStatement = connection.prepareStatement(" select * from users where id=?;")) {
-            preparedStatement.setInt(1,Integer.parseInt(id));
+            preparedStatement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             user = new User(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
             user.setId(resultSet.getInt(1));
+            user.setImageName(resultSet.getString(6));
         } catch (Exception x) {
             x.printStackTrace();
         }
@@ -144,7 +146,7 @@ public class DbStore implements Store {
     private boolean existUser(String id) {
         String request = "select * from users where id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(request)) {
-            preparedStatement.setInt(1,Integer.parseInt(id));
+            preparedStatement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 return false;
