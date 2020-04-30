@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DbStore implements Store {
     private static final BasicDataSource SOURCE = new BasicDataSource();
     private static final DbStore INSTANCE = new DbStore();
-    private volatile AtomicInteger counterId = new AtomicInteger(0);
+    private volatile AtomicInteger counterId = new AtomicInteger(1);
     private Connection connection;
 
     public DbStore() {
@@ -44,7 +44,7 @@ public class DbStore implements Store {
     @Override
     public boolean add(User user) {
         user.setId(getCounterId());
-        String sqlc = ("insert into users (id, name, login, email, creation_date,imageName) values (?,?,?,?,?,?);");
+        String sqlc = ("insert into users (id, name, login, email, creation_date,imageName,id_role,password) values (?,?,?,?,?,?,?,?);");
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
             preparedStatement.setInt(1, user.getId());
             preparedStatement.setString(2, user.getName());
@@ -52,6 +52,8 @@ public class DbStore implements Store {
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setDate(5, Date.valueOf(user.getCreateDate()));
             preparedStatement.setString(6,user.getImageName());
+            preparedStatement.setInt(7,user.getRoleId());
+            preparedStatement.setString(8,user.getPassword());
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -101,6 +103,7 @@ public class DbStore implements Store {
                 User user = new User(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
                 user.setId(resultSet.getInt(1));
                 user.setImageName(resultSet.getString(6));
+                user.setRoleId(resultSet.getInt(7));
                 userList.add(user);
             }
         } catch (Exception x) {
@@ -123,6 +126,7 @@ public class DbStore implements Store {
             user = new User(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
             user.setId(resultSet.getInt(1));
             user.setImageName(resultSet.getString(6));
+            user.setRoleId(resultSet.getInt(7));
         } catch (Exception x) {
             x.printStackTrace();
         }
@@ -156,4 +160,18 @@ public class DbStore implements Store {
         }
         return true;
     }
+    public int getCredentials(String login, String pwd) {
+        String request = "select * from users where login=?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(request)) {
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()&&resultSet.getString(8).equals(pwd)) {
+                  return resultSet.getInt(7);
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return 0;
+    }
+
 }

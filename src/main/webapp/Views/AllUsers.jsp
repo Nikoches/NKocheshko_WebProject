@@ -1,19 +1,17 @@
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Table of Users</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <jsp:include page="Parts/HeadPart.jsp" />
 </head>
 <body>
-<h2>Users:</h2>
+<h2>           Users:</h2>
+<br>
 <button onclick="location.href = 'add';" class="btn btn-default" >Add User</button>
+<br>
 <button onclick="location.href = 'remove';" class="btn btn-default" >Remove All</button>
+<br>
 <div class=="container">
     <table class="table">
     <thead>
@@ -44,5 +42,10 @@
         </tbody>
 </table>
 </div>
+
+<br>
+<form action="LogoutServlet" method="post">
+   <br> <button formmethod="post" type="submit" onclick="location.href = 'LogoutServlet';" class="btn btn-primary" >Logout</button>
+</form>
 </body>
 </html>

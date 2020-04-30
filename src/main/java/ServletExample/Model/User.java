@@ -7,7 +7,17 @@ public class User {
     private String createDate;
     private int id;
     private String imageName;
+    private int roleId;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private String password;
     public String getImageName() {
         return imageName;
     }
@@ -62,6 +72,14 @@ public class User {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     @Override

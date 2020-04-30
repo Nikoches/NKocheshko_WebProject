@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ValidateService<T> {
+public class ValidateService {
     private static final ValidateService validateService = new ValidateService();
     private final Map<String, Function<User, Optional>> dispatch = new HashMap<>();
     private final Store usersStorage = DbStore.getInstance();
@@ -84,11 +84,13 @@ public class ValidateService<T> {
         Map<String, String> params = getParams(items);
         User user = new User(params.get("name"), params.get("login"), params.get("email"), "2020-03-12");
         user.setImageName(params.get("imageName"));
-        System.out.println(params.get("imageName"));
+        user.setPassword(params.get("password"));
+        user.setRoleId(Integer.parseInt(params.get("role")));
         return user;
     }
     private Map<String,String> getParams(List<FileItem> items) {
         HashMap<String,String> params = new HashMap<>();
+        params.put("imageName","default.jpg");
         try {
             for (FileItem item : items) {
                 if (item.isFormField()) {
@@ -106,4 +108,5 @@ public class ValidateService<T> {
     private User processUser(HttpServletRequest stringUser)  {
         return new User(stringUser.getParameter("name"), stringUser.getParameter("login"), stringUser.getParameter("email"), "30-03-2020");
     }
+
 }
