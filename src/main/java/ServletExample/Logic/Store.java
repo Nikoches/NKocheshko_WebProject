@@ -5,6 +5,7 @@ import ServletExample.Model.User;
 import java.util.List;
 
 public interface Store {
+
     boolean add(User user);
 
     boolean update(User user, String id);
@@ -16,6 +17,8 @@ public interface Store {
     User findById(String id);
 
     void removeAll();
+
+    int getCredentials(String login, String pwd);
 
     int getCounterId();
 }

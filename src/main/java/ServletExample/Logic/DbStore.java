@@ -15,7 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DbStore implements Store {
     private static final BasicDataSource SOURCE = new BasicDataSource();
-    private static final DbStore INSTANCE = new DbStore();
+    private static final Store INSTANCE = new DbStore();
+
     private volatile AtomicInteger counterId = new AtomicInteger(1);
     private Connection connection;
 
@@ -23,7 +24,7 @@ public class DbStore implements Store {
         setConnection();
     }
 
-    public static DbStore getInstance() {
+    public static Store getInstance() {
         return INSTANCE;
     }
 

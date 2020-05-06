@@ -68,4 +68,9 @@ public class UsersStorage implements Store {
     public void removeAll() {
         userList.clear();
     }
+
+    @Override
+    public int getCredentials(String login, String pwd) {
+        return 0;
+    }
 }

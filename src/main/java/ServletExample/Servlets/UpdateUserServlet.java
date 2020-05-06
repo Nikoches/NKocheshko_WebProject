@@ -1,5 +1,6 @@
 package ServletExample.Servlets;
 
+import ServletExample.Logic.Validate;
 import ServletExample.Logic.ValidateService;
 import ServletExample.Model.User;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class UpdateUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ValidateService validateService = ValidateService.getInstance();
+        Validate validateService = ValidateService.getInstance();
         User user = (User) validateService.process(req,"findbyid").get();
         req.setAttribute("user", user);
         req.getRequestDispatcher("Views/UpdateUser.jsp").forward(req, resp);

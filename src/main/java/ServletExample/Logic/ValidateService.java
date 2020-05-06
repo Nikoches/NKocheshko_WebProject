@@ -12,9 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ValidateService {
+public class ValidateService implements Validate {
     private static final ValidateService validateService = new ValidateService();
-    private final Map<String, Function<User, Optional>> dispatch = new HashMap<>();
     private final Store usersStorage = DbStore.getInstance();
     private ValidateService() {
         dispatch.put("add", add());
@@ -28,10 +27,15 @@ public class ValidateService {
     public static ValidateService getInstance() {
         return validateService;
     }
-
+    /*
+    Apply action from dicpatcher with multi-part data;
+     */
     public Optional process(List<FileItem> items,String action) {
         return dispatch.get(action).apply(processUser(items));
     }
+    /*
+    Apply action from dispatcher with simple HTTP request;
+     */
     public Optional process(HttpServletRequest request, String action) {
         return dispatch.get(action).apply(processUser(request));
     }
@@ -80,33 +84,4 @@ public class ValidateService {
     private Function<User, Optional> findById() {
         return key -> Optional.of(usersStorage.findById(String.valueOf(key.getId())));
     }
-    private User processUser(List<FileItem> items)  {
-        Map<String, String> params = getParams(items);
-        User user = new User(params.get("name"), params.get("login"), params.get("email"), "2020-03-12");
-        user.setImageName(params.get("imageName"));
-        user.setPassword(params.get("password"));
-        user.setRoleId(Integer.parseInt(params.get("role")));
-        return user;
-    }
-    private Map<String,String> getParams(List<FileItem> items) {
-        HashMap<String,String> params = new HashMap<>();
-        params.put("imageName","default.jpg");
-        try {
-            for (FileItem item : items) {
-                if (item.isFormField()) {
-                    String secondParam = Streams.asString(item.getInputStream());
-                    params.put(item.getFieldName(), secondParam);
-                } else {
-                    params.put("imageName", item.getName());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return params;
-    }
-    private User processUser(HttpServletRequest stringUser)  {
-        return new User(stringUser.getParameter("name"), stringUser.getParameter("login"), stringUser.getParameter("email"), "30-03-2020");
-    }
-
 }

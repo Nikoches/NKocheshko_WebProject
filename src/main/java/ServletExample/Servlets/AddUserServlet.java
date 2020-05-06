@@ -1,5 +1,6 @@
 package ServletExample.Servlets;
 
+import ServletExample.Logic.Validate;
 import ServletExample.Logic.ValidateService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -21,12 +22,11 @@ public class AddUserServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");
-
         req.getRequestDispatcher("Views/AddUser.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        ValidateService validateService = ValidateService.getInstance();
+        Validate validateService = ValidateService.getInstance();
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletContext servletContext = this.getServletConfig().getServletContext();
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
