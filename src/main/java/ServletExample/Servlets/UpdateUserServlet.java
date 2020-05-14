@@ -21,7 +21,7 @@ public class UpdateUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        ValidateService validateService = ValidateService.getInstance();
+        Validate validateService = ValidateService.getInstance();
         validateService.process(req,req.getParameter("key"));
         resp.sendRedirect("all");
     }

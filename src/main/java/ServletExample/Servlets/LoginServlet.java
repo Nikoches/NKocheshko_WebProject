@@ -10,13 +10,13 @@ import java.io.IOException;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
+    private Store dbStore = DbStore.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
       resp.sendRedirect("Views/login.jsp");
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // get request parameters for userID and password
-        Store dbStore = DbStore.getInstance();
         int role = dbStore.getCredentials(request.getParameter("user"),request.getParameter("pwd"));
         if(role > 0) {
             Cookie userName = new Cookie("user",role + "");

@@ -27,7 +27,9 @@ public class DbStore implements Store {
     public static Store getInstance() {
         return INSTANCE;
     }
-
+    /*
+        Setting connection to DataBase;
+     */
     private void setConnection() {
         try (InputStream in = DbStore.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
@@ -41,7 +43,7 @@ public class DbStore implements Store {
             e.printStackTrace();
         }
     }
-
+//TODO написать хранимые процедуры для всех
     @Override
     public boolean add(User user) {
         user.setId(getCounterId());
@@ -58,6 +60,7 @@ public class DbStore implements Store {
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
+            return false;
         }
         return true;
     }

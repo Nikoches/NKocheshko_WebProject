@@ -2,18 +2,17 @@ package ServletExample.Logic;
 
 import ServletExample.Model.User;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.util.Streams;
+
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-
+/*
+    Service
+ */
 public class ValidateService implements Validate {
-    private static final ValidateService validateService = new ValidateService();
+    private static final Validate validateService = new ValidateService();
     private final Store usersStorage = DbStore.getInstance();
     private ValidateService() {
         dispatch.put("add", add());
@@ -23,8 +22,7 @@ public class ValidateService implements Validate {
         dispatch.put("removeAll", removeAll());
         dispatch.put("findAll", findAll());
     }
-
-    public static ValidateService getInstance() {
+    public static Validate getInstance() {
         return validateService;
     }
     /*

@@ -55,6 +55,6 @@ public class AddUserServlet extends HttpServlet{
         } catch (FileUploadException e) {
             e.printStackTrace();
         }
-        req.getRequestDispatcher("all").forward(req, resp);
+        resp.sendRedirect("all");
     }
 }

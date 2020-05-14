@@ -13,6 +13,9 @@
     <p>  </p>
     <input type="hidden" name="id" value=${user.id} /> <br/>
     <input type="hidden" name="key" value="update"/> <br/>
+    <p> </p>
+    <img src="${pageContext.servletContext.contextPath}/download?name=${user.imageName}" width="100px" height="100px"/>
+    <p> </p>
     <input type="submit" value="Update" />
     <p></p>
     <a href="all">All Users</a>
