@@ -13,9 +13,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public interface Validate {
-    Map<String, Function<User, Optional>> dispatch = new HashMap<>();
-    public Optional process(List<FileItem> items, String action);
-    public Optional process(HttpServletRequest request, String action);
     default User processUser(HttpServletRequest stringUser)  {
         User user = new User(stringUser.getParameter("name"), stringUser.getParameter("login"), stringUser.getParameter("email"), "30-03-2020");
         if(stringUser.getParameter("id") != null) {
@@ -44,4 +41,6 @@ public interface Validate {
         user.setRoleId(Integer.parseInt(params.get("role")));
         return user;
     }
+     Optional process(HttpServletRequest request, String action);
+     Optional process(List<FileItem> items,String action);
 }

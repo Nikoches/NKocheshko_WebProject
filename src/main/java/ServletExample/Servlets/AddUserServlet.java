@@ -28,32 +28,36 @@ public class AddUserServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Validate validateService = ValidateService.getInstance();
         DiskFileItemFactory factory = new DiskFileItemFactory();
-        ServletContext servletContext = this.getServletConfig().getServletContext();
+        ServletContext servletContext = getServletContext();
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
         factory.setRepository(repository);
         ServletFileUpload upload = new ServletFileUpload(factory);
-        try {
-            List<FileItem> items = upload.parseRequest(req);
-            File folder = new File("images");
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-            for (FileItem item : items) {
-                if (!item.isFormField()) {
-                    InputStream picName = item.getInputStream();
-                    if(picName.available() > 0){
-                        File file = new File(folder + File.separator + item.getName());
-                        try (FileOutputStream out = new FileOutputStream(file)) {
-                            out.write(picName.readAllBytes());
-                        }catch (IOException error){
-                            error.printStackTrace();
+        if(req.getContentType()!=null && req.getContentType().equals("multipart/form-data")) {
+            try {
+                List<FileItem> items = upload.parseRequest(req);
+                File folder = new File("images");
+                if (!folder.exists()) {
+                    folder.mkdir();
+                }
+                for (FileItem item : items) {
+                    if (!item.isFormField()) {
+                        InputStream picName = item.getInputStream();
+                        if (picName.available() > 0) {
+                            File file = new File(folder + File.separator + item.getName());
+                            try (FileOutputStream out = new FileOutputStream(file)) {
+                                out.write(picName.readAllBytes());
+                            } catch (IOException error) {
+                                error.printStackTrace();
+                            }
                         }
                     }
                 }
+                validateService.process(items, "add");
+            } catch (FileUploadException e) {
+                e.printStackTrace();
             }
-            validateService.process(items,"add");
-        } catch (FileUploadException e) {
-            e.printStackTrace();
+        }else {
+            validateService.process(req,"add");
         }
         resp.sendRedirect("all");
     }

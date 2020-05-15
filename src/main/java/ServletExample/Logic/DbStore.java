@@ -43,7 +43,7 @@ public class DbStore implements Store {
             e.printStackTrace();
         }
     }
-//TODO написать хранимые процедуры для всех
+
     @Override
     public boolean add(User user) {
         user.setId(getCounterId());

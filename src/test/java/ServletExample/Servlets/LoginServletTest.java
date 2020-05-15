@@ -5,33 +5,108 @@ import ServletExample.Logic.DbStore;
 import ServletExample.Logic.Store;
 import ServletExample.Logic.Validate;
 import ServletExample.Logic.ValidateService;
+import ServletExample.Model.User;
 import ServletExample.Servlets.TestInstance.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.http.HttpRequest;
+import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Test1.class)
+@PrepareForTest(ValidateService.class)
 public class LoginServletTest {
     @Test
     public void whenAddUserThenStoreIt() throws ServletException, IOException {
-        TestInterface testInterface= new Test3();
-       // PowerMockito.mockStatic(Test1.class);
-       // Mockito.when(Test1.getInstance()).thenReturn(testInterface);
+        Validate validate = new ValidateTester();
+        PowerMockito.mockStatic(ValidateService.class);
+        Mockito.when(ValidateService.getInstance()).thenReturn(validate);
+        HttpServletRequest reqToAdd = mock(HttpServletRequest.class);
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        when(reqToAdd.getParameter("name")).thenReturn("Vova Vova");
+        when(reqToAdd.getParameter("login")).thenReturn("vova12");
+        when(reqToAdd.getParameter("email")).thenReturn("vova12@log.com");
+        HttpServletRequest reqToGet = mock(HttpServletRequest.class);
+        AddUserServlet addUserServlet = new AddUserServlet() {
+            public ServletContext getServletContext(){
+                return mock(ServletContext.class);
+            }
+        };
+        addUserServlet.doPost(reqToAdd, resp);
+        List<User> userList = (List) validate.process(reqToGet,"all").get();
+        assertThat(userList.iterator().next().getName(), is("Vova Vova"));
+    }
 
+    @Test
+    public void whenRemoveUser() throws ServletException, IOException {
+        Validate validate = new ValidateTester();
+        PowerMockito.mockStatic(ValidateService.class);
+        Mockito.when(ValidateService.getInstance()).thenReturn(validate);
+        HttpServletRequest reqToAdd = mock(HttpServletRequest.class);
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        when(reqToAdd.getParameter("name")).thenReturn("Vova Vova");
+        when(reqToAdd.getParameter("login")).thenReturn("vova12");
+        when(reqToAdd.getParameter("email")).thenReturn("vova12@log.com");
+        HttpServletRequest reqToGet = mock(HttpServletRequest.class);
+        AddUserServlet addUserServlet = new AddUserServlet() {
+            public ServletContext getServletContext(){
+                return mock(ServletContext.class);
+            }
+        };
+        RemoveUserServlet removeUserServlet = new RemoveUserServlet(){
+            public ServletContext getServletContext() {
+                return mock(ServletContext.class);
+            };
+        };
+
+        addUserServlet.doPost(reqToAdd, resp);
+        List<User> userList = (List) validate.process(reqToGet,"all").get();
+        assertThat(userList.iterator().next().getName(), is("Vova Vova"));
+        removeUserServlet.doGet(reqToGet,resp);
+        assertThat(userList.iterator().hasNext(), is(false));
+    }
+
+    @Test
+    public void whenUpdateUser() throws ServletException, IOException {
+        Validate validate = new ValidateTester();
+        PowerMockito.mockStatic(ValidateService.class);
+        Mockito.when(ValidateService.getInstance()).thenReturn(validate);
+        HttpServletRequest reqToAdd = mock(HttpServletRequest.class);
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        when(reqToAdd.getParameter("name")).thenReturn("Vova Vova");
+        when(reqToAdd.getParameter("login")).thenReturn("vova12");
+        when(reqToAdd.getParameter("email")).thenReturn("vova12@log.com");
+        HttpServletRequest reqToGet = mock(HttpServletRequest.class);
+        when(reqToGet.getParameter("name")).thenReturn("Andy Andy");
+        when(reqToGet.getParameter("login")).thenReturn("vova12");
+        when(reqToGet.getParameter("email")).thenReturn("vova12@log.com");
+        when(reqToGet.getParameter("id")).thenReturn("0");
+        when(reqToGet.getParameter("key")).thenReturn("update");
+        AddUserServlet addUserServlet = new AddUserServlet() {
+            public ServletContext getServletContext(){
+                return mock(ServletContext.class);
+            }
+        };
+        UpdateUserServlet updateUserServlet = new UpdateUserServlet();
+        addUserServlet.doPost(reqToAdd, resp);
+        List<User> userList = (List) validate.process(reqToGet,"all").get();
+        assertThat(userList.iterator().next().getName(), is("Vova Vova"));
+        updateUserServlet.doPost(reqToGet,resp);
+        assertThat(userList.iterator().next().getName(), is("Andy Andy"));
     }
 
 

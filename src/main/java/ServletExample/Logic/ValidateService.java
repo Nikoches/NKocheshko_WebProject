@@ -5,7 +5,9 @@ import org.apache.commons.fileupload.FileItem;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 /*
@@ -13,6 +15,7 @@ import java.util.function.Function;
  */
 public class ValidateService implements Validate {
     private static final Validate validateService = new ValidateService();
+    Map<String, Function<User, Optional>> dispatch = new HashMap<>();
     private final Store usersStorage = DbStore.getInstance();
     private ValidateService() {
         dispatch.put("add", add());

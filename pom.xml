@@ -6,17 +6,20 @@
     <artifactId>chapter_008</artifactId>
     <groupId>Web</groupId>
     <version>0.1</version>
+    <properties>
+        <powermock.version>2.0.2</powermock.version>
+    </properties>
 <dependencies>
     <dependency>
         <groupId>org.powermock</groupId>
         <artifactId>powermock-module-junit4</artifactId>
-        <version>1.6.4</version>
+        <version>${powermock.version}</version>
         <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>org.powermock</groupId>
-        <artifactId>powermock-api-mockito</artifactId>
-        <version>1.6.4</version>
+        <artifactId>powermock-api-mockito2</artifactId>
+        <version>${powermock.version}</version>
         <scope>test</scope>
     </dependency>
     <dependency>
@@ -32,12 +35,14 @@
     </dependency>
     <!-- https://mvnrepository.com/artifact/junit/junit -->
     <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13</version>
+        <version>4.12</version>
         <scope>test</scope>
     </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
     <dependency>
