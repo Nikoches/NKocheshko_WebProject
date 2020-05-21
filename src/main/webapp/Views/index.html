@@ -16,6 +16,11 @@
             return true;
         }
     </script>
+    <script>
+        function addRow() {
+            $('#table tr:last').after('<tr><td>' + "ss1" +'</td><td>' + "ss2" +'</td></tr>');
+        }
+    </script>
 </head>
 <body>
 
@@ -37,5 +42,22 @@
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
 </form>
+
+<table class="table" id="table">
+<thead>
+<tr>
+    <th>first</th>
+    <th>second</th>
+</tr>
+</thead>
+<tbody>
+    <tr>
+        <td>value1</td>
+        <td>value2</td>
+    </tr>
+</tbody>
+</table>
+<button onclick="addRow()" class="btn btn-primary" >add row</button>
+
 </body>
 </html>
