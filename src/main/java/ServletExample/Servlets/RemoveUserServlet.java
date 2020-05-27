@@ -15,10 +15,10 @@ public class RemoveUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ServletContext ss = this.getServletContext();
         Validate validateService = ValidateService.getInstance();
-        if(req.getParameter("id")==null) {
-            validateService.process(req,"removeAll");
-        }else {
-            validateService.process(req,req.getParameter("key"));
+        if (req.getParameter("id") == null) {
+            validateService.process(req, "removeAll");
+        } else {
+            validateService.process(req, req.getParameter("key"));
             ss.log("String from servlet remove:" + req.getParameter("id"));
         }
         resp.sendRedirect("all");
@@ -27,7 +27,7 @@ public class RemoveUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Validate validateService = ValidateService.getInstance();
-        validateService.process(req,req.getParameter("delete"));
+        validateService.process(req, req.getParameter("delete"));
         resp.sendRedirect("all");
     }
 }

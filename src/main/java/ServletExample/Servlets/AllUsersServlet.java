@@ -14,14 +14,15 @@ public class AllUsersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Validate validateService = ValidateService.getInstance();
-        ArrayList s2 = (ArrayList) validateService.process(req,"findAll").get();
+        ArrayList s2 = (ArrayList) validateService.process(req, "findAll").get();
         req.setAttribute("list", s2);
         req.getRequestDispatcher("Views/AllUsers.jsp").forward(req, resp);
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Validate validateService = ValidateService.getInstance();
-        ArrayList s2 = (ArrayList) validateService.process(req,"findAll").get();
+        ArrayList s2 = (ArrayList) validateService.process(req, "findAll").get();
         req.setAttribute("list", s2);
         req.getRequestDispatcher("Views/AllUsers.jsp").forward(req, resp);
     }

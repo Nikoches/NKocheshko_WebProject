@@ -4,7 +4,10 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
-
+    <servlet>
+        <servlet-name>Greeting</servlet-name>
+        <servlet-class>ServletExample.Servlets.ServletExample</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>AllUsers</servlet-name>
         <servlet-class>ServletExample.Servlets.AllUsersServlet</servlet-class>
@@ -75,7 +78,11 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>Greeting</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+    
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>ServletExample.Filters.AuthenticationFilter</filter-class>

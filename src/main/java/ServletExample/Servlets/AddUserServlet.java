@@ -17,13 +17,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-//TODO дописать boostrap в login.jsp
-public class AddUserServlet extends HttpServlet{
+
+public class AddUserServlet extends HttpServlet {
+    //TODO Добавить readme
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");
         req.getRequestDispatcher("Views/AddUser.jsp").forward(req, resp);
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Validate validateService = ValidateService.getInstance();
@@ -32,7 +34,7 @@ public class AddUserServlet extends HttpServlet{
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
         factory.setRepository(repository);
         ServletFileUpload upload = new ServletFileUpload(factory);
-        if(req.getContentType()!=null && req.getContentType().equals("multipart/form-data")) {
+        if (req.getContentType() != null && req.getContentType().equals("multipart/form-data")) {
             try {
                 List<FileItem> items = upload.parseRequest(req);
                 File folder = new File("images");
@@ -56,8 +58,8 @@ public class AddUserServlet extends HttpServlet{
             } catch (FileUploadException e) {
                 e.printStackTrace();
             }
-        }else {
-            validateService.process(req,"add");
+        } else {
+            validateService.process(req, "add");
         }
         resp.sendRedirect("all");
     }

@@ -21,7 +21,7 @@ public class AuthorityFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
-        Cookie[] cookies =req.getCookies();
+        Cookie[] cookies = req.getCookies();
         int role = 0;
         if (cookies != null) {
             for (Cookie x : cookies) {
@@ -33,7 +33,7 @@ public class AuthorityFilter implements Filter {
         }
         if (role == 1) {
             filterChain.doFilter(req, res);
-        } else  {
+        } else {
             this.context.log("Unauthorized access rights request");
             req.getRequestDispatcher("Views/Unable.jsp").forward(req, res);
         }

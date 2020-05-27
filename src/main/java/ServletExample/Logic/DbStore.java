@@ -27,6 +27,7 @@ public class DbStore implements Store {
     public static Store getInstance() {
         return INSTANCE;
     }
+
     /*
         Setting connection to DataBase;
      */
@@ -54,9 +55,9 @@ public class DbStore implements Store {
             preparedStatement.setString(3, user.getLogin());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setDate(5, Date.valueOf(user.getCreateDate()));
-            preparedStatement.setString(6,user.getImageName());
-            preparedStatement.setInt(7,user.getRoleId());
-            preparedStatement.setString(8,user.getPassword());
+            preparedStatement.setString(6, user.getImageName());
+            preparedStatement.setInt(7, user.getRoleId());
+            preparedStatement.setString(8, user.getPassword());
             preparedStatement.execute();
         } catch (Exception x) {
             x.printStackTrace();
@@ -88,12 +89,12 @@ public class DbStore implements Store {
         if (!existUser(id) & id != null) {
             return false;
         }
-            String sqlc = "delete from  users  where id = ?;";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
-                preparedStatement.setInt(1, Integer.parseInt(id));
-                preparedStatement.execute();
-            } catch (Exception x) {
-                x.printStackTrace();
+        String sqlc = "delete from  users  where id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc)) {
+            preparedStatement.setInt(1, Integer.parseInt(id));
+            preparedStatement.execute();
+        } catch (Exception x) {
+            x.printStackTrace();
         }
         return true;
     }
@@ -164,13 +165,14 @@ public class DbStore implements Store {
         }
         return true;
     }
+
     public int getCredentials(String login, String pwd) {
         String request = "select * from users where login=?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(request)) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()&&resultSet.getString(8).equals(pwd)) {
-                  return resultSet.getInt(7);
+            if (resultSet.next() && resultSet.getString(8).equals(pwd)) {
+                return resultSet.getInt(7);
             }
         } catch (Exception x) {
             x.printStackTrace();

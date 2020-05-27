@@ -11,9 +11,9 @@ public class LogoutServlet extends HttpServlet {
         response.setContentType("text/html");
         HttpSession session = request.getSession(false);
         Cookie[] cookies = request.getCookies();
-        if(cookies != null) {
+        if (cookies != null) {
             session.invalidate();
-            for (Cookie x :cookies){
+            for (Cookie x : cookies) {
                 x.setMaxAge(0);
                 response.addCookie(x);
             }
