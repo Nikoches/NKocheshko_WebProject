@@ -73,4 +73,9 @@ public class UsersStorage implements Store {
     public int getCredentials(String login, String pwd) {
         return 0;
     }
+
+    @Override
+    public List<String> getCities() {
+        return null;
+    }
 }

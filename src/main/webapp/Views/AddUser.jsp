@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -12,32 +13,30 @@
             return true;
         }
     </script>
+    <script>
+        function getCity() {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/chapter_008_war/city',
+                dataType: 'json'
+            }).done(function(data) {
+                html = "";
+                for(var key in data) {
+                    html += "<option value=" + key  + ">" +data[key] + "</option>"
+                }
+                document.getElementById("city").innerHTML = html;
+                console.log(data)
+            }).fail(function(err){
+                console.log(err)
+                alert("err");
+            });
+        }
+
+    </script>
 </head>
-<body vlink="#FF9428">
+<body vlink="#FF9428" onload="getCity()">
 
 <form name="loginForm" method="post" action="<%=request.getContextPath()%>/add" enctype="multipart/form-data">
-<%--    <p>  </p>--%>
-<%--    Username: <input type="text" name="name"/> <br/>--%>
-<%--    <p>  </p>--%>
-<%--    Login: <input type="text" name="login"/> <br/>--%>
-<%--    <p>  </p>--%>
-<%--    Email: <input type="text" name="email"/> <br/>--%>
-<%--    <p>  </p>--%>
-<%--    Password: <input type="password" name="password"/> <br/>--%>
-<%--    <p>  </p>--%>
-
-<%--    <select name="role">--%>
-<%--        <option value="1">Administrator</option>--%>
-<%--        <option value="2">User</option>--%>
-<%--    </select>--%>
-<%--    <p>  </p>--%>
-<%--    <br><br>--%>
-<%--        <div class="checkbox">--%>
-<%--            <input type="file" name="file">--%>
-<%--        </div>--%>
-<%--    <p>  </p>--%>
-<%--    <button type="submit" class="btn btn-default">Submit</button>--%>
-
         <label for="email"> Username:</label>
         <input type="text" class="form-control" id="name" name="name">
         <br>
@@ -55,12 +54,14 @@
         <option value="2">User</option>
     </select>
     <p>  </p>
+    <select name="city" id="city">
+    </select>
     <br><br>
     <div class="checkbox">
         <input type="file" name="file">
     </div>
     <p>  </p>
-    <button type="submit" onclick="return validate();" class="btn btn-default">Submit</button>
+    <button type="submit"  class="btn btn-default">Submit</button>
 </form>
 </body>
 </html>

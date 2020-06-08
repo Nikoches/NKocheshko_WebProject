@@ -34,7 +34,7 @@ public class AuthenticationFilter implements Filter {
                 }
             }
         }
-        if (role != 0 || uri.endsWith("login.jsp") || uri.endsWith("LoginServlet") || uri.endsWith("hello")|| uri.endsWith("greet")) {
+        if (role != 0 || uri.endsWith("login.jsp") || uri.endsWith("LoginServlet") || uri.endsWith("hello")|| uri.endsWith("city")) {
             chain.doFilter(request, response);
         } else {
             this.context.log("Unauthorized access request");

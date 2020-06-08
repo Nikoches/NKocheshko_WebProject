@@ -22,12 +22,15 @@ public class ValidateTester implements Validate {
     }
     @Override
     public Optional process(List<FileItem> items, String action) {
-        return dispatch.get(action).apply(processUser(items));
+        //return dispatch.get(action).apply(processUser(items));
+        return null;
     }
+
 
     @Override
     public Optional process(HttpServletRequest request, String action) {
-        return dispatch.get(action).apply(processUser(request));
+       return null;
+        // return dispatch.get(action).apply(processUser(request));
     }
     private Function<User, Optional> add() {
         return user -> {

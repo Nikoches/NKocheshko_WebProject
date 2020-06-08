@@ -21,4 +21,6 @@ public interface Store {
     int getCredentials(String login, String pwd);
 
     int getCounterId();
+
+    List<String> getCities();
 }

@@ -179,5 +179,17 @@ public class DbStore implements Store {
         }
         return 0;
     }
+    public List<String> getCities() {
+        List<String> cities = new ArrayList<>();
+        String sqlc = "select * from city order by city_id;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlc); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                cities.add(resultSet.getString(2));
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return cities;
 
+    }
 }

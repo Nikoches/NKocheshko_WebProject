@@ -23,18 +23,18 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");
-        req.getRequestDispatcher("Views/AddUser.jsp").forward(req, resp);
+        resp.sendRedirect("Views/AddUser.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Validate validateService = ValidateService.getInstance();
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        ServletContext servletContext = getServletContext();
-        File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-        factory.setRepository(repository);
-        ServletFileUpload upload = new ServletFileUpload(factory);
         if (req.getContentType() != null && req.getContentType().equals("multipart/form-data")) {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletContext servletContext = getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            ServletFileUpload upload = new ServletFileUpload(factory);
             try {
                 List<FileItem> items = upload.parseRequest(req);
                 File folder = new File("images");
